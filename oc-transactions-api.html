@@ -1,0 +1,48 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../iron-ajax/iron-ajax.html">
+<link rel="import" href="../oc-core-utils/oc-core-utils.html">
+
+<dom-module id="oc-transactions-api">
+	<template>
+		<iron-ajax id="accountTransfer"></iron-ajax>
+	</template>
+
+	<script>
+		/**
+		 * `oc-transactions-api`
+		 * Api endpoint for all transaction related queries
+		 *
+		 * @customElement
+		 * @polymer
+		 * @demo demo/index.html
+		 */
+		class OcTransactionsApi extends Ordercloud.ApiMixin(Polymer.Element) {
+			static get is() {
+				return 'oc-transactions-api';
+			}
+
+			static get properties() {
+				return {}
+			};
+
+			/**
+			 * Transfer between accounts
+			 * @param amount
+			 * @param fromAccountId
+			 * @param toAccountId
+			 * @returns {*}
+			 */
+			accountTransfer(amount, fromAccountId, toAccountId) {
+				this.$.accountTransfer.url = this._generateUrl('transactions/transfer');
+				this.$.accountTransfer.body = {
+					amount: amount,
+					fromAccountId: fromAccountId,
+					toAccountId: toAccountId,
+				};
+				return this._generateRequest(this.$.accountTransfer);
+			}
+		}
+
+		window.customElements.define(OcTransactionsApi.is, OcTransactionsApi);
+	</script>
+</dom-module>
