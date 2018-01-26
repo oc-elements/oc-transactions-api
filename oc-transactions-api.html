@@ -34,6 +34,8 @@
 			 */
 			accountTransfer(amount, fromAccountId, toAccountId) {
 				this.$.accountTransfer.url = this._generateUrl('transactions/transfer');
+				this.$.accountTransfer.method = "POST";
+				this.$.accountTransfer.contentType = "application/json";
 				this.$.accountTransfer.body = {
 					amount: amount,
 					fromAccountId: fromAccountId,
