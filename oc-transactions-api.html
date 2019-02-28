@@ -32,7 +32,7 @@
 			 * @param toAccountId
 			 * @returns {*}
 			 */
-			accountTransfer(amount, fromAccountId, toAccountId) {
+			accountTransfer(amount, fromAccountId, toAccountId, details) {
 				this.$.accountTransfer.url = this._generateUrl('transactions/transfer');
 				this.$.accountTransfer.method = "POST";
 				this.$.accountTransfer.contentType = "application/json";
@@ -40,6 +40,7 @@
 					amount: amount,
 					fromAccountId: fromAccountId,
 					toAccountId: toAccountId,
+					...details
 				};
 				return this._generateRequest(this.$.accountTransfer);
 			}
