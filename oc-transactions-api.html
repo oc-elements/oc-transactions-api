@@ -5,6 +5,8 @@
 <dom-module id="oc-transactions-api">
 	<template>
 		<iron-ajax id="accountTransfer"></iron-ajax>
+		<iron-ajax id="createFlashTopUp"></iron-ajax>
+		<iron-ajax id="executeTopup"></iron-ajax>
 	</template>
 
 	<script>
@@ -43,6 +45,32 @@
 					...details
 				};
 				return this._generateRequest(this.$.accountTransfer);
+			}
+
+			createFlashTopUp(amount, fromOrgId, transaction, transactionType, topUpReference) {
+				this.$.createFlashTopUp.url = this._generateUrl('v2/transactions');
+				this.$.createFlashTopUp.method = "POST";
+				this.$.createFlashTopUp.contentType = "application/json";
+				this.$.createFlashTopUp.body = {
+					transactingOrgId: fromOrgId,
+					txnType: transactionType,
+					transactorReference:topUpReference,
+					from:{
+						account:{amount: amount}
+					},
+					to:transaction
+				};
+				return this._generateRequest(this.$.createFlashTopUp);
+			}
+			executeTopup(fromOrgId, transactionId) {
+				this.$.executeTopup.url = this._generateUrl('v2/transactions/start');
+				this.$.executeTopup.method = "PUT";
+				this.$.executeTopup.contentType = "application/json";
+				this.$.executeTopup.body = {
+					transactingOrgId: fromOrgId,
+					txnId: transactionId,
+				};
+				return this._generateRequest(this.$.executeTopup);
 			}
 		}
 
