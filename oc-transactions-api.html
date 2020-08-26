@@ -5,8 +5,12 @@
 <dom-module id="oc-transactions-api">
 	<template>
 		<iron-ajax id="accountTransfer"></iron-ajax>
-		<iron-ajax id="createFlashTopUp"></iron-ajax>
-		<iron-ajax id="executeTopup"></iron-ajax>
+		<iron-ajax id="createTransaction"></iron-ajax>
+		<iron-ajax id="createOrderPayment"></iron-ajax>
+		<iron-ajax id="executeTransaction"></iron-ajax>
+		<iron-ajax id="confirmFlashPayment"></iron-ajax>
+		<iron-ajax id="getOrganisationAccountTransactions"></iron-ajax>
+		<iron-ajax id="getOrganisationAccountTransaction"></iron-ajax>
 	</template>
 
 	<script>
@@ -47,30 +51,69 @@
 				return this._generateRequest(this.$.accountTransfer);
 			}
 
-			createFlashTopUp(amount, fromOrgId, transaction, transactionType, topUpReference) {
-				this.$.createFlashTopUp.url = this._generateUrl('v2/transactions');
-				this.$.createFlashTopUp.method = "POST";
-				this.$.createFlashTopUp.contentType = "application/json";
-				this.$.createFlashTopUp.body = {
+
+			getOrganisationAccountTransactions(organisationId, accountId, page, pageSize) {
+				const qPage = (page) ? `&page_number=${page}` : '';
+				const qPageSize = (pageSize) ? `&page_size=${pageSize}` : '';
+				const optionalParams = qPage + qPageSize;
+
+				this.$.getOrganisationAccountTransactions.url = this._generateUrl(`v2/transactions?org_id=${organisationId}&account_id=${accountId}${optionalParams}`);
+				return this._generateRequest(this.$.getOrganisationAccountTransactions);
+			}
+
+			getOrganisationAccountTransaction(organisationId, transactionId) {
+				this.$.getOrganisationAccountTransactions.url = this._generateUrl(`v2/transactions?org_id=${organisationId}&txn_id=${transactionId}`);
+				return this._generateRequest(this.$.getOrganisationAccountTransactions);
+			}
+
+
+			createTransaction(amount, fromOrgId, transaction, transactionType, topUpReference) {
+				this.$.createTransaction.url = this._generateUrl('v2/transactions');
+				this.$.createTransaction.method = "POST";
+				this.$.createTransaction.contentType = "application/json";
+				this.$.createTransaction.body = {
 					transactingOrgId: fromOrgId,
 					txnType: transactionType,
-					transactorReference:topUpReference,
+					transactorReference: topUpReference,
 					from:{
 						account:{amount: amount}
 					},
 					to:transaction
 				};
-				return this._generateRequest(this.$.createFlashTopUp);
+				return this._generateRequest(this.$.createTransaction);
 			}
-			executeTopup(fromOrgId, transactionId) {
-				this.$.executeTopup.url = this._generateUrl('v2/transactions/start');
-				this.$.executeTopup.method = "PUT";
-				this.$.executeTopup.contentType = "application/json";
-				this.$.executeTopup.body = {
+
+			createOrderPayment(fromOrgId, fromDetail, transactionDetail, reference) {
+				this.$.createOrderPayment.url = this._generateUrl('v2/transactions');
+				this.$.createOrderPayment.method = "POST";
+				this.$.createOrderPayment.contentType = "application/json";
+				this.$.createOrderPayment.body = {
 					transactingOrgId: fromOrgId,
-					txnId: transactionId,
+					txnType: "make_payment",
+					transactorReference: reference,
+					from: fromDetail,
+					to:transactionDetail
 				};
-				return this._generateRequest(this.$.executeTopup);
+				return this._generateRequest(this.$.createOrderPayment);
+			}
+			confirmFlashPayment(paymentId, paymentData) {
+				this.$.confirmFlashPayment.url = this._generateUrl('v2/transactions/' + paymentId);
+				this.$.confirmFlashPayment.method = "POST";
+				this.$.confirmFlashPayment.contentType = "application/json";
+				this.$.confirmFlashPayment.body = paymentData;
+				return this._generateRequest(this.$.confirmFlashPayment);
+			}
+
+
+			executeTransaction(fromOrgId, transactionId) {
+				this.$.executeTransaction.url = this._generateUrl('v2/transactions/start');
+				this.$.executeTransaction.method = "PUT";
+				this.$.executeTransaction.contentType = "application/json";
+				this.$.executeTransaction.body = {
+					transactingOrgId: fromOrgId,
+					txnId: Number(transactionId),
+				};
+				return this._generateRequest(this.$.executeTransaction);
 			}
 		}
 
