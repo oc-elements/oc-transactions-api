@@ -57,12 +57,12 @@
 				const qPageSize = (pageSize) ? `&page_size=${pageSize}` : '';
 				const optionalParams = qPage + qPageSize;
 
-				this.$.getOrganisationAccountTransactions.url = this._generateUrl(`v2/transactions?org_id=${organisationId}&account_id=${accountId}${optionalParams}`);
+				this.$.getOrganisationAccountTransactions.url = this._generateUrl(`v2/transactions/history?org_id=${organisationId}&account_id=${accountId}${optionalParams}`);
 				return this._generateRequest(this.$.getOrganisationAccountTransactions);
 			}
 
-			getOrganisationAccountTransaction(organisationId, transactionId) {
-				this.$.getOrganisationAccountTransactions.url = this._generateUrl(`v2/transactions?org_id=${organisationId}&txn_id=${transactionId}`);
+			getOrganisationAccountTransaction(organisationId, correlationId) {
+				this.$.getOrganisationAccountTransactions.url = this._generateUrl(`v2/transactions/history?org_id=${organisationId}&txn_id=${correlationId}`);
 				return this._generateRequest(this.$.getOrganisationAccountTransactions);
 			}
 
