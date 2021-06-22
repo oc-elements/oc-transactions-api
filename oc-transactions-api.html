@@ -62,7 +62,7 @@
 			}
 
 			getOrganisationAccountTransaction(organisationId, correlationId) {
-				this.$.getOrganisationAccountTransactions.url = this._generateUrl(`v2/transactions/history?org_id=${organisationId}&txn_id=${correlationId}`);
+				this.$.getOrganisationAccountTransactions.url = this._generateUrl(`v2/transactions/history?org_id=${organisationId}&correlation_id=${correlationId}`);
 				return this._generateRequest(this.$.getOrganisationAccountTransactions);
 			}
 
