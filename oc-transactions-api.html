@@ -8,6 +8,7 @@
 		<iron-ajax id="createTransaction"></iron-ajax>
 		<iron-ajax id="createOrderPayment"></iron-ajax>
 		<iron-ajax id="executeTransaction"></iron-ajax>
+		<iron-ajax id="getPollTransaction"></iron-ajax>
 		<iron-ajax id="confirmFlashPayment"></iron-ajax>
 		<iron-ajax id="getOrganisationAccountTransactions"></iron-ajax>
 		<iron-ajax id="getOrganisationAccountTransaction"></iron-ajax>
@@ -61,8 +62,13 @@
 				return this._generateRequest(this.$.getOrganisationAccountTransactions);
 			}
 
-			getOrganisationAccountTransaction(organisationId, correlationId) {
-				this.$.getOrganisationAccountTransactions.url = this._generateUrl(`v2/transactions/history?org_id=${organisationId}&correlation_id=${correlationId}`);
+			getPollTransaction(organisationId, correlationId) {
+				this.$.getPollTransaction.url = this._generateUrl(`v2/transactions/history?org_id=${organisationId}&correlation_id=${correlationId}`);
+				return this._generateRequest(this.$.getPollTransaction);
+			}
+
+			getOrganisationAccountTransaction(organisationId, transactionId) {
+				this.$.getOrganisationAccountTransactions.url = this._generateUrl(`v2/transactions/history?org_id=${organisationId}&txn_id=${transactionId}`);
 				return this._generateRequest(this.$.getOrganisationAccountTransactions);
 			}
 
