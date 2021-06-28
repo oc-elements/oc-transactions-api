@@ -89,6 +89,20 @@
 				return this._generateRequest(this.$.createTransaction);
 			}
 
+			createTransfer(fromOrgId, fromDetail, transactionDetail, reference) {
+				this.$.createOrderPayment.url = this._generateUrl('v2/transactions');
+				this.$.createOrderPayment.method = "POST";
+				this.$.createOrderPayment.contentType = "application/json";
+				this.$.createOrderPayment.body = {
+					transactingOrgId: fromOrgId,
+					txnType: "transfer",
+					transactorReference: reference,
+					from: fromDetail,
+					to:transactionDetail
+				};
+				return this._generateRequest(this.$.createOrderPayment);
+			}
+
 			createOrderPayment(fromOrgId, fromDetail, transactionDetail, reference) {
 				this.$.createOrderPayment.url = this._generateUrl('v2/transactions');
 				this.$.createOrderPayment.method = "POST";
@@ -102,6 +116,7 @@
 				};
 				return this._generateRequest(this.$.createOrderPayment);
 			}
+
 			confirmFlashPayment(paymentId, paymentData) {
 				this.$.confirmFlashPayment.url = this._generateUrl('v2/transactions/' + paymentId);
 				this.$.confirmFlashPayment.method = "POST";
