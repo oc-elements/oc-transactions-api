@@ -80,7 +80,7 @@
 				this.$.createTransaction.body = {
 					transactingOrgId: fromOrgId,
 					txnType: transactionType,
-					transactorReference: topUpReference,
+					targetReference: topUpReference,
 					from:{
 						account:{amount: amount}
 					},
@@ -110,7 +110,7 @@
 				this.$.createOrderPayment.body = {
 					transactingOrgId: fromOrgId,
 					txnType: "make_payment",
-					transactorReference: reference,
+					targetReference: reference,
 					from: fromDetail,
 					to:transactionDetail
 				};
