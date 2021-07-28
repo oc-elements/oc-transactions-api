@@ -63,7 +63,7 @@
 			}
 
 			getPollTransaction(organisationId, correlationId) {
-				this.$.getPollTransaction.url = this._generateUrl(`v2/transactions/history?org_id=${organisationId}&correlation_id=${correlationId}`);
+				this.$.getPollTransaction.url = this._generateUrl(`v2/transactions?org_id=${organisationId}&correlation_id=${correlationId}`);
 				return this._generateRequest(this.$.getPollTransaction);
 			}
 
